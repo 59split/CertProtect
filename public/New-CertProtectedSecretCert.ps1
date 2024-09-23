@@ -25,8 +25,10 @@ function New-CertProtectedSecretCert {
         A switch that alters the output of the function. If present, it export the cerificate that can decrypt the secret.
     .NOTES
         Author:         Ian Hutchison
+        v0.3 - (2024-09-23) Added debug and verbose passthrough
+        v0.2 - (2022-11-24) Moved exporting the certificate to a separate function so it can be ran independently if needed. 
         v0.1 - (2022-08-12) Initial version
-        v0.2 - (2022-11-24) Moved exporting the certificate to a separate function so it can be ran independently if needed.        
+               
     .EXAMPLE
         New-CertProtectedSecret -certName MyFirstSecretCertificate -certFriendlyName "My First Cert"
     .EXAMPLE
@@ -71,7 +73,8 @@ function New-CertProtectedSecretCert {
     }
 
     # verify that this certificate does not exist so we dont overwrite it
-    $certificateExists = Test-CertProtectedSecretCertExists -certName $certname
+    $certificateExists = Test-CertProtectedSecretCertExists -certName $certname -Verbose:($PSCmdlet.MyInvocation.BoundParameters["Verbose"].IsPresent -eq $true) -Debug:($PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent -eq $true) 
+
     if ($certificateExists){
         $return.success = $false
         $return.message = "Certificate already exists. Delete the certificate by running the following command before trying again.`n"
@@ -99,7 +102,7 @@ function New-CertProtectedSecretCert {
         New-SelfSignedCertificate @newSelfSignedCertificateExParameters | Out-Null
 
         # test if the cert was successfully created
-        $certificateExists = Test-CertProtectedSecretCertExists -certName $certname      
+        $certificateExists = Test-CertProtectedSecretCertExists -certName $certname -Verbose:($PSCmdlet.MyInvocation.BoundParameters["Verbose"].IsPresent -eq $true) -Debug:($PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent -eq $true)   
         
         if (-NOT $certificateExists) {
             $return.success = $false
@@ -110,7 +113,7 @@ function New-CertProtectedSecretCert {
 
     # export the certificate
     if ($continue) {
-        $exportResults = Export-CertProtectedSecretCert -certName $certname -filePath $filePath -AsObject
+        $exportResults = Export-CertProtectedSecretCert -certName $certname -filePath $filePath -AsObject -Verbose:($PSCmdlet.MyInvocation.BoundParameters["Verbose"].IsPresent -eq $true) -Debug:($PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent -eq $true) 
         $exportResults
         if ($exportResults.success = $false) {
             $return.message =  "Successfully created the certificate but failed to export it. Cannot continue.`n"
