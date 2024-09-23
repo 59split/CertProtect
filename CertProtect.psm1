@@ -1,10 +1,11 @@
-[CmdletBinding]
+[CmdletBinding()]
+Param()
 
 ##### Variables #############################################
 
 $InformationPreference = "Continue"
-$VerbosePreference = "Continue"
-$DebugPreference = "Continue"
+if ($PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent) { $DebugPreference = "Continue" }
+
 
 [string]$script:scriptPath = Split-Path (get-variable myinvocation -scope script).value.Mycommand.Definition -Parent
 $currentModuleName = Split-Path -path $script:ScriptPath -Leaf -Resolve
