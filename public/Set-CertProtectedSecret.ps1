@@ -22,6 +22,7 @@ function Set-CertProtectedSecret {
         and a message detailing the result or issue. If not present the output will be the text of the message.
     .NOTES
         Author:         Ian Hutchison
+        v0.2 - (2024-09-23) Added debug and verbose passthrough
         v0.1 - (2022-08-12) Initial version
     .EXAMPLE
         Set-CertProtectedSecret -certName MyFirstSecretCertificate -filePath c:\temp\secretmessage.txt
@@ -53,7 +54,7 @@ function Set-CertProtectedSecret {
     }
 
     # check if the certificate exists
-    $certificateExists = Test-CertProtectedSecretCertExists -certname $certName
+    $certificateExists = Test-CertProtectedSecretCertExists -certname $certName -Verbose:($PSCmdlet.MyInvocation.BoundParameters["Verbose"].IsPresent -eq $true) -Debug:($PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent -eq $true) 
     if (-NOT $certificateExists){
         $return.Success = $false
         $return.message = "Certificate does not exists. Please verify the name and try again.`n"
