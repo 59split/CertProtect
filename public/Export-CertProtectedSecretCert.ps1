@@ -16,6 +16,7 @@ function Export-CertProtectedSecretCert {
         and a message detailing the result or issue. If not present the output will be the text of the message.
     .NOTES
         Author:         Ian Hutchison
+        v0.2 - (2024-09-23) Added additional text to $return.message
         v0.1 - (2022-11-24) Initial version        
     .EXAMPLE
         Export-CertProtectedSecret -certName MyFirstSecretCertificate -filePath c:\temp\
@@ -96,7 +97,7 @@ function Export-CertProtectedSecretCert {
             $return.message += "when it asks for the password."
             $return.message += "`n`n"
             $return.message += "The password is `'$([System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)))`'. "
-            $return.message += "Please note it down now as it will not be shown again."
+            $return.message += "Please note it down now as it will not be shown again, and cannot be recovered."
             $return.message += "`n`n"
             $return.message += "The exported certificate file is located at $outputPath"
             $return.message += "`n`n"
