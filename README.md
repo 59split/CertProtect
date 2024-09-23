@@ -1,4 +1,4 @@
-# CertSecret
+# CertProtect
 
 Powershell module for protecting a secret using public/private keys.
 
@@ -14,9 +14,12 @@ This module can be used to protect a password that needs to be shared, e.g. I ha
 This module encrypts a password (secret) using a public key and exports the private key to be shared with others
 
 ## Installation
-`Install-Module -Name CertSecret`
+`Install-Module -Name CertProtect`
 
 ## Version History
+### v0.2
+Renamed from CertSecret to CertProtect, and added verbose and debug parameter passthrough
+
 ### v0.1
 This is the initial version of this module and it contains the following functions:
 
